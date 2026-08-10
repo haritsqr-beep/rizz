@@ -40,7 +40,7 @@ def health():
 
 
 @app.route("/api/search", methods=["POST"])
-async def search():
+def search():
     """
     Start a new search.
     
@@ -79,8 +79,13 @@ async def search():
             sources=sources
         )
         
-        # Execute search
-        hits = await engine.search(query)
+        # Execute search (run async in event loop)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            hits = loop.run_until_complete(engine.search(query))
+        finally:
+            loop.close()
         
         # Store results
         hits_store[search_id] = hits

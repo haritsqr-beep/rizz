@@ -1,11 +1,10 @@
 """Example search sources for NeXuS-LinK"""
 import logging
 import uuid
-from datetime import datetime
 from typing import List
 
 from ..core.searcher import BaseSource
-from ..models.query import Hit
+from ..models.query_v2 import Hit, Gender
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +20,6 @@ class DemoPhoneSource(BaseSource):
         """Simulate phone lookup"""
         logger.info(f"DemoPhoneSource: searching for {query}")
         
-        # Mock data
         hits = [
             Hit(
                 hit_id=str(uuid.uuid4()),
@@ -30,6 +28,8 @@ class DemoPhoneSource(BaseSource):
                 platform="TruePeopleSearch",
                 url="https://www.truepeople search.com/results",
                 confidence=0.92,
+                gender=Gender.MALE,
+                location="New York, NY",
                 raw_data={
                     "location": "New York, NY",
                     "region": "New York",
@@ -44,6 +44,8 @@ class DemoPhoneSource(BaseSource):
                 platform="WhitePages",
                 url="https://www.whitepages.com/results",
                 confidence=0.87,
+                gender=Gender.MALE,
+                location="Brooklyn, NY",
                 raw_data={
                     "location": "Brooklyn, NY",
                     "region": "New York",
@@ -73,6 +75,7 @@ class DemoSocialSource(BaseSource):
                 platform="Instagram",
                 url="https://instagram.com/johndoe_ny",
                 confidence=0.78,
+                gender=Gender.MALE,
                 raw_data={
                     "bio": "NYC based | Photographer",
                     "followers": 1250
@@ -85,6 +88,7 @@ class DemoSocialSource(BaseSource):
                 platform="Twitter",
                 url="https://twitter.com/john_doe_32",
                 confidence=0.71,
+                gender=Gender.MALE,
                 raw_data={
                     "bio": "Software engineer, NYC",
                     "followers": 340
@@ -113,6 +117,8 @@ class DemoEmailSource(BaseSource):
                 platform="LinkedIn",
                 url="https://linkedin.com/in/johndoe",
                 confidence=0.89,
+                gender=Gender.MALE,
+                location="New York, USA",
                 raw_data={
                     "location": "New York, USA",
                     "title": "Senior Engineer",
@@ -126,9 +132,10 @@ class DemoEmailSource(BaseSource):
                 platform="Google Dorking",
                 url=None,
                 confidence=0.76,
+                gender=Gender.UNKNOWN,
                 raw_data={
                     "domain": "techcorp.com",
-                    "context": "Found in leaked data list (public source)"
+                    "context": "Found in public source"
                 }
             )
         ]
