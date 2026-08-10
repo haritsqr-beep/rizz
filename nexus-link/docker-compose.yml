@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+    environment:
+      - FLASK_ENV=production
+      - NEXUS_AUTO_CONFIRM=false
+      - NEXUS_CONFIDENCE_THRESHOLD=65
+    volumes:
+      - ./results:/app/results
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
