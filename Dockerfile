@@ -2,7 +2,9 @@
 FROM python:3.12-slim
 
 LABEL org.opencontainers.image.title="Numint" \
-      org.opencontainers.image.description="Phone number OSINT & intelligence tool (authorized use only)."
+      org.opencontainers.image.description="Phone number OSINT & intelligence tool (authorized use only)." \
+      org.opencontainers.image.source="https://github.com/whoamitang/numint" \
+      org.opencontainers.image.licenses="MIT"
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -20,7 +22,8 @@ RUN pip install --no-cache-dir ".[all]"
 # The web UI static assets are packaged; no npm/node build required.
 EXPOSE 8080
 
-# Default: serve the web UI. Override CMD to use the CLI, e.g.:
-#   docker run --rm numint numint +14155550123
-ENTRYPOINT []
-CMD ["numint", "web", "--host", "0.0.0.0", "--port", "8080"]
+# Treat the image like the installed CLI:
+#   docker run --rm -it numint +14155550123
+#   docker run --rm -p 8080:8080 numint web --host 0.0.0.0 --port 8080
+ENTRYPOINT ["numint"]
+CMD ["--help"]
