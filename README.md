@@ -65,9 +65,36 @@ pip install ".[all]"       # everything (web, PDF export, Discord bot)
 Prefer Docker? No Python setup needed:
 
 ```bash
+# One-shot CLI lookup, like a locally installed `numint` command
+docker run --rm -it ghcr.io/whoamitang/numint:latest +14155550123
+
+# Pass any normal CLI flags after the image name
+docker run --rm -it ghcr.io/whoamitang/numint:latest \
+  +14155550123 --offline --json
+
+# Launch the web UI, then open http://localhost:8080
+docker run --rm -p 8080:8080 ghcr.io/whoamitang/numint:latest \
+  web --host 0.0.0.0 --port 8080
+```
+
+API keys and other settings can be passed with `--env-file .env` or individual
+`-e KEY=value` flags:
+
+```bash
+docker run --rm -it --env-file .env \
+  ghcr.io/whoamitang/numint:latest +14155550123
+```
+
+To build from source instead, clone the repository and use either workflow:
+
+```bash
 git clone https://github.com/whoamitang/numint.git
 cd numint
-docker compose up          # then open http://localhost:8080
+docker build -t numint .
+docker run --rm -it numint +14155550123
+
+# Or run the web UI through Compose
+docker compose up
 ```
 
 ## Quick start
